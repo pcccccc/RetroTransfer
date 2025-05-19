@@ -7,13 +7,26 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		4FD240EB2DD48528007F19AF /* HttpServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HttpServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FD240EB2DD48528007F19AF /* RetroTransfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroTransfer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4FD241022DD486F1007F19AF /* Exceptions for "RetroTransfer" folder in "RetroTransfer" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Other/Info.plist,
+			);
+			target = 4FD240EA2DD48528007F19AF /* RetroTransfer */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		4FD240ED2DD48528007F19AF /* HttpServer */ = {
+		4FD240ED2DD48528007F19AF /* RetroTransfer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HttpServer;
+			exceptions = (
+				4FD241022DD486F1007F19AF /* Exceptions for "RetroTransfer" folder in "RetroTransfer" target */,
+			);
+			path = RetroTransfer;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +45,7 @@
 		4FD240E22DD48528007F19AF = {
 			isa = PBXGroup;
 			children = (
-				4FD240ED2DD48528007F19AF /* HttpServer */,
+				4FD240ED2DD48528007F19AF /* RetroTransfer */,
 				4FD240EC2DD48528007F19AF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +53,7 @@
 		4FD240EC2DD48528007F19AF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4FD240EB2DD48528007F19AF /* HttpServer.app */,
+				4FD240EB2DD48528007F19AF /* RetroTransfer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +61,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4FD240EA2DD48528007F19AF /* HttpServer */ = {
+		4FD240EA2DD48528007F19AF /* RetroTransfer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4FD240F62DD4852A007F19AF /* Build configuration list for PBXNativeTarget "HttpServer" */;
+			buildConfigurationList = 4FD240F62DD4852A007F19AF /* Build configuration list for PBXNativeTarget "RetroTransfer" */;
 			buildPhases = (
 				4FD240E72DD48528007F19AF /* Sources */,
 				4FD240E82DD48528007F19AF /* Frameworks */,
@@ -61,13 +74,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				4FD240ED2DD48528007F19AF /* HttpServer */,
+				4FD240ED2DD48528007F19AF /* RetroTransfer */,
 			);
-			name = HttpServer;
+			name = RetroTransfer;
 			packageProductDependencies = (
 			);
 			productName = HttpServer;
-			productReference = 4FD240EB2DD48528007F19AF /* HttpServer.app */;
+			productReference = 4FD240EB2DD48528007F19AF /* RetroTransfer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +98,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4FD240E62DD48528007F19AF /* Build configuration list for PBXProject "HttpServer" */;
+			buildConfigurationList = 4FD240E62DD48528007F19AF /* Build configuration list for PBXProject "RetroTransfer" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -94,12 +107,14 @@
 			);
 			mainGroup = 4FD240E22DD48528007F19AF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FD240EC2DD48528007F19AF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4FD240EA2DD48528007F19AF /* HttpServer */,
+				4FD240EA2DD48528007F19AF /* RetroTransfer */,
 			);
 		};
 /* End PBXProject section */
@@ -185,6 +200,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -242,6 +258,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -256,11 +273,16 @@
 				DEVELOPMENT_TEAM = 42X4872J7N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RetroTransfer/Other/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "RetroTransfer需要访问您的本地网络以创建HTTP服务器。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -284,11 +306,16 @@
 				DEVELOPMENT_TEAM = 42X4872J7N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RetroTransfer/Other/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "RetroTransfer需要访问您的本地网络以创建HTTP服务器。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -305,7 +332,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4FD240E62DD48528007F19AF /* Build configuration list for PBXProject "HttpServer" */ = {
+		4FD240E62DD48528007F19AF /* Build configuration list for PBXProject "RetroTransfer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FD240F42DD4852A007F19AF /* Debug */,
@@ -314,7 +341,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4FD240F62DD4852A007F19AF /* Build configuration list for PBXNativeTarget "HttpServer" */ = {
+		4FD240F62DD4852A007F19AF /* Build configuration list for PBXNativeTarget "RetroTransfer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FD240F72DD4852A007F19AF /* Debug */,
