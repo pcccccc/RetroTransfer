@@ -12,10 +12,9 @@ import Combine
 class HttpServerManager: ObservableObject {
     @Published var isRunning = false
     @Published var selectedFolder: URL?
-    @Published var showDirectoryListing = true
+    @Published var settingViewModel = SettingViewModel()
     
     private var listener: NWListener?
-    private let port: UInt16 = 8080
     private let connectionQueue = DispatchQueue(label: "com.httpserver.connection", qos: .userInitiated, attributes: .concurrent)
     private let fileQueue = DispatchQueue(label: "com.httpserver.file", qos: .utility, attributes: .concurrent)
     // CHANGE: 使用NSMapTable替代Set，因为NWConnection不符合Hashable协议
@@ -27,7 +26,7 @@ class HttpServerManager: ObservableObject {
         
         do {
             let parameters = NWParameters.tcp
-            listener = try NWListener(using: parameters, on: NWEndpoint.Port(rawValue: port)!)
+            listener = try NWListener(using: parameters, on: NWEndpoint.Port(rawValue: UInt16(settingViewModel.port) ?? 0)!)
             
             listener?.stateUpdateHandler = { [weak self] state in
                 switch state {
@@ -35,7 +34,7 @@ class HttpServerManager: ObservableObject {
                     DispatchQueue.main.async {
                         self?.isRunning = true
                     }
-                    print("HTTP服务器运行在端口 \(self?.port ?? 0)")
+                    print("HTTP服务器运行在端口 \(self?.settingViewModel.port ?? "8080")")
                 case .failed(let error):
                     print("HTTP服务器错误: \(error)")
                     self?.stop()
@@ -156,11 +155,7 @@ class HttpServerManager: ObservableObject {
         }
         
         if relativePath.isEmpty || relativePath == "/" {
-            if showDirectoryListing {
-                sendDirectoryListing(for: selectedFolder, to: connection)
-            } else {
-                sendErrorResponse(to: connection, statusCode: 403, message: String(localized: "Directory browsing forbidden"))
-            }
+            sendDirectoryListing(for: selectedFolder, to: connection)
             return
         }
         
@@ -171,11 +166,7 @@ class HttpServerManager: ObservableObject {
         var isDirectory: ObjCBool = false
         if FileManager.default.fileExists(atPath: fileURL.path, isDirectory: &isDirectory) {
             if isDirectory.boolValue {
-                if showDirectoryListing {
-                    sendDirectoryListing(for: fileURL, to: connection)
-                } else {
-                    sendErrorResponse(to: connection, statusCode: 403, message: String(localized: "Directory browsing forbidden"))
-                }
+                sendDirectoryListing(for: fileURL, to: connection)
             } else {
                 sendFile(at: fileURL, to: connection, connectionId: connectionId)
             }
@@ -189,7 +180,7 @@ class HttpServerManager: ObservableObject {
             let fileManager = FileManager.default
             let contents = try fileManager.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: nil)
             
-            var html = "<html><head><title>Directory Listing</title></head><body>"
+            var html = "<html><head><meta charset=\"UTF-8\"><title>Directory Listing</title></head><body>"
             html += "<h1>\(String(format: String(localized: "Directory: %@"), directoryURL.lastPathComponent))</h1><ul>"
             
             // 添加上级目录链接（如果不是根目录）

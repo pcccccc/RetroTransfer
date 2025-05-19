@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4F3AC1FC2DDB23FD00D951C7 /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3AC1FB2DDB23FD00D951C7 /* ColorfulX */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		4FD240EB2DD48528007F19AF /* RetroTransfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroTransfer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3AC1FC2DDB23FD00D951C7 /* ColorfulX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = RetroTransfer;
 			packageProductDependencies = (
+				4F3AC1FB2DDB23FD00D951C7 /* ColorfulX */,
 			);
 			productName = HttpServer;
 			productReference = 4FD240EB2DD48528007F19AF /* RetroTransfer.app */;
@@ -108,6 +114,7 @@
 			mainGroup = 4FD240E22DD48528007F19AF;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				4F3AC1FA2DDB23FD00D951C7 /* XCRemoteSwiftPackageReference "ColorfulX" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FD240EC2DD48528007F19AF /* Products */;
@@ -270,7 +277,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 42X4872J7N;
+				DEVELOPMENT_TEAM = HZG263D38Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RetroTransfer/Other/Info.plist;
@@ -288,7 +295,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.xintujing.HttpServer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.idog.retrotransfer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -303,7 +310,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 42X4872J7N;
+				DEVELOPMENT_TEAM = HZG263D38Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RetroTransfer/Other/Info.plist;
@@ -321,7 +328,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.xintujing.HttpServer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.idog.retrotransfer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -351,6 +358,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4F3AC1FA2DDB23FD00D951C7 /* XCRemoteSwiftPackageReference "ColorfulX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lakr233/ColorfulX";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.5.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4F3AC1FB2DDB23FD00D951C7 /* ColorfulX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F3AC1FA2DDB23FD00D951C7 /* XCRemoteSwiftPackageReference "ColorfulX" */;
+			productName = ColorfulX;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4FD240E32DD48528007F19AF /* Project object */;
 }

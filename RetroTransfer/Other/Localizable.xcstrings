@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "zh-Hans",
   "strings" : {
-    "" : {
-
-    },
     "1.0.0" : {
 
     },
@@ -370,6 +367,9 @@
         }
       }
     },
+    "Start" : {
+
+    },
     "Status: %@" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -386,6 +386,9 @@
           }
         }
       }
+    },
+    "Stop" : {
+
     },
     "Stopped" : {
       "extractionState" : "manual",

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @State private var port: String = "8080"
-    @State private var maxConnections: Int = 10
+    @State var settingViewModel = SettingViewModel()
     
     var body: some View {
         NavigationView {
@@ -19,7 +18,7 @@ struct SettingsView: View {
                     HStack {
                         Text("Port")
                         Spacer()
-                        TextField("8080", text: $port)
+                        TextField("8080", text: $settingViewModel.port)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 100)

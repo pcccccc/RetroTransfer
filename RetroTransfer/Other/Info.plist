@@ -6,6 +6,10 @@
 	<array>
 		<string>_http._tcp</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>processing</string>
+	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 </dict>
