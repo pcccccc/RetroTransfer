@@ -8,7 +8,8 @@ When you have an old phone (such as Nokia N95) that cannot download directly fro
 
 ## Current Status
 
-The application is currently in its initial version. Future updates may include support for more transfer methods. Like Symbian S60 v3, Symbian S60 V5, Java Jar
+The application is currently in its initial version. 
+Develop more apps for corresponding platforms, and use Wi-Fi to transfer files between RetroTransfer and the corresponding platform apps. Like Symbian S60 v3, Symbian S60 V5, Java Jar
 
 ## Todo:
 
