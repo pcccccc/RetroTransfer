@@ -1,8 +1,8 @@
-##RetroTransfer
+## RetroTransfer
 
 RetroTransfer is an HTTP Server application running on Apple platforms.
 
-##Use Case
+## Use Case
 
 When you have an old phone (such as Nokia N95) that cannot download directly from the internet, and you don't have a USB cable. You download other HTTP Server apps from the App Store, but they fail to connect properly.
 
@@ -10,13 +10,14 @@ When you have an old phone (such as Nokia N95) that cannot download directly fro
 
 The application is currently in its initial version. Future updates may include support for more transfer methods. Like Symbian S60 v3, Symbian S60 V5, Java Jar
 
-##Todo:
+## Todo:
 
 - [ ] Support for macOS
 - [ ] Design dedicated versions of the app for various platforms, enabling direct file transfer via WiFi
 
 
-##Testing Results
+## Testing Results
+
 Currently only tested successfully on Nokia N95 8G, with the following browsers:
 
 |  APP   | 兼容性 | 备注 |
