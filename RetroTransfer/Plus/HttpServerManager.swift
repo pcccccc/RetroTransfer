@@ -263,7 +263,7 @@ class HttpServerManager: ObservableObject {
             html += "</ul></body></html>"
             
             let contentBytes = html.data(using: .utf8)!
-            let response = "HTTP/1.0 200 OK\r\nContent-Type: text/html\r\nContent-Length: \(contentBytes.count)\r\n\r\n\(html)"
+            let response = "HTTP/1.0 200 OK\r\nContent-Type: text/html\r\nContent-Length: \(contentBytes.count)\r\nCache-Control:no-cache\r\n\r\n\(html)"
             
             // 一次性发送完整响应
             connection.send(content: response.data(using: .utf8)!, completion: .idempotent)

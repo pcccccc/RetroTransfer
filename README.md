@@ -23,9 +23,9 @@ Currently only tested successfully on Nokia N95 8G, with the following browsers:
 
 |  APP   | Compatibility | Infomation |
 | :-----: | :------: | :------: | 
-| UC Browser 8.6 (sis) |    ⚠️     |    can only download non-sis, non-sisx, non-jar files     |
-|  UC Browser 8.9 (sis)   |    ✅     |    requires disabling download security check     |
-|  System default browser   |    ✅     |    can download any file     |
-|  UC Browser 9.0 (java)   |    ✅     |    can download any file     |
+|  System default browser   |    ✅     |    can download any file and install jar/sis/sisx     |
+| UC Browser 8.6 (sis) |    ⚠️     |    can only download non-sis, non-sisx, non-jar files, There may be cases where it is unable to connect to the server, unknown reason.     |
+|  UC Browser 8.9 (sis)   |    ⚠️     |    requires disabling download security check, can download any file and install jar/sis/sisx, There may be cases where it is unable to connect to the server, unknown reason.     |
+|  UC Browser 9.0 (java)   |    ⚠️     |    can download any file, can download any file and install jar/sis/sisx, There may be cases where it is unable to connect to the server, unknown reason.     |
 |  Opera 7.6 (sis)   |    ❌     |    Unable to test, Opera on the test phone couldn't load any webpages     |
 
