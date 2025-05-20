@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "zh-Hans",
   "strings" : {
+    "%@:%@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@:%2$@"
+          }
+        }
+      }
+    },
     "1.0.0" : {
 
     },
@@ -109,6 +119,9 @@
         }
       }
     },
+    "Emoji:" : {
+
+    },
     "Error %d" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -193,6 +206,9 @@
           }
         }
       }
+    },
+    "My Widget" : {
+
     },
     "No shared folder selected" : {
       "extractionState" : "manual",
@@ -280,6 +296,9 @@
       }
     },
     "RetroTransfer" : {
+
+    },
+    "RetroTransfer %@:" : {
 
     },
     "Running" : {
@@ -406,6 +425,12 @@
           }
         }
       }
+    },
+    "This is an example widget." : {
+
+    },
+    "Time:" : {
+
     },
     "Version" : {
       "extractionState" : "manual",

@@ -8,6 +8,8 @@
 import Foundation
 import Network
 import Combine
+import ActivityKit
+
 
 class HttpServerManager: ObservableObject {
     @Published var isRunning = false
@@ -21,6 +23,7 @@ class HttpServerManager: ObservableObject {
     private var activeConnections = NSMapTable<NSString, AnyObject>.strongToWeakObjects()
     private let activeConnectionsQueue = DispatchQueue(label: "com.httpserver.connections.sync")
     
+    
     func start() {
         guard !isRunning else { return }
         
@@ -33,6 +36,7 @@ class HttpServerManager: ObservableObject {
                 case .ready:
                     DispatchQueue.main.async {
                         self?.isRunning = true
+                        self?.startLiveActivity()
                     }
                     print("HTTP服务器运行在端口 \(self?.settingViewModel.port ?? "8080")")
                 case .failed(let error):
@@ -71,8 +75,52 @@ class HttpServerManager: ObservableObject {
         DispatchQueue.main.async {
             self.isRunning = false
         }
+        Task {
+            await self.stopLiveActivity()
+        }
         print("HTTP服务器已停止")
     }
+    
+    private func startLiveActivity() {
+        if #available(iOS 16.1, *) {
+            if ActivityAuthorizationInfo().areActivitiesEnabled {
+                let ipAddress = Common.getWiFiIPAddress() ?? "localhost"
+                let port = settingViewModel.port
+                let folderName = selectedFolder?.lastPathComponent ?? "未知文件夹"
+                
+                let attributes = ServerAttributes(serverName: "RetroTransfer")
+                let contentState = ServerAttributes.ContentState(
+                    ipAddress: ipAddress,
+                    port: port,
+                    folderName: folderName
+                )
+                
+                do {
+                     let activity = try Activity.request(
+                        attributes: attributes,
+                        contentState: contentState,
+                        pushType: nil
+                    )
+                    print("Requested a Live Activity \(activity.id)")
+                } catch {
+                    print("启动活动失败: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    private func stopLiveActivity() async {
+        if #available(iOS 16.1, *) {
+            for activity in Activity<ServerAttributes>.activities{
+                await activity.end(dismissalPolicy: .immediate)
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+
     
     private func handleConnection(_ connection: NWConnection) {
         // 添加到活动连接集合
@@ -214,20 +262,11 @@ class HttpServerManager: ObservableObject {
             
             html += "</ul></body></html>"
             
-            // 使用简单的HTTP/1.0头部，确保Content-Length正确
             let contentBytes = html.data(using: .utf8)!
-            
-            var response = "HTTP/1.0 200 OK\r\n"
-            response += "Content-Type: text/html\r\n"
-            response += "Content-Length: \(contentBytes.count)\r\n"
-            response += "\r\n"
+            let response = "HTTP/1.0 200 OK\r\nContent-Type: text/html\r\nContent-Length: \(contentBytes.count)\r\n\r\n\(html)"
             
             // 一次性发送完整响应
-            let headerBytes = response.data(using: .utf8)!
-            var completeResponse = Data()
-            completeResponse.append(headerBytes)
-            completeResponse.append(contentBytes)
-            connection.send(content: completeResponse, completion: .idempotent)
+            connection.send(content: response.data(using: .utf8)!, completion: .idempotent)
         } catch {
             sendErrorResponse(to: connection, statusCode: 500, message: String(localized: "Reading directory failed"))
         }

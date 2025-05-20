@@ -8,13 +8,58 @@
 
 /* Begin PBXBuildFile section */
 		4F3AC1FC2DDB23FD00D951C7 /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3AC1FB2DDB23FD00D951C7 /* ColorfulX */; };
+		4F617C672DDC4AF8000F5A92 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F617C302DDC2C1B000F5A92 /* WidgetKit.framework */; };
+		4F617C682DDC4AF8000F5A92 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F617C322DDC2C1B000F5A92 /* SwiftUI.framework */; };
+		4F617C752DDC4AF9000F5A92 /* RetroActivityWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4F617C662DDC4AF7000F5A92 /* RetroActivityWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4F617C732DDC4AF9000F5A92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FD240E32DD48528007F19AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F617C652DDC4AF7000F5A92;
+			remoteInfo = RetroActivityWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4F617C462DDC2C1C000F5A92 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4F617C752DDC4AF9000F5A92 /* RetroActivityWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		4F617C302DDC2C1B000F5A92 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
+		4F617C322DDC2C1B000F5A92 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
+		4F617C662DDC4AF7000F5A92 /* RetroActivityWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RetroActivityWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD240EB2DD48528007F19AF /* RetroTransfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroTransfer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4F617C792DDC4AF9000F5A92 /* Exceptions for "RetroActivityWidget" folder in "RetroActivityWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4F617C652DDC4AF7000F5A92 /* RetroActivityWidgetExtension */;
+		};
+		4F617C7B2DDC4CE7000F5A92 /* Exceptions for "RetroTransfer" folder in "RetroActivityWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Other/Localizable.xcstrings,
+				Plus/ServerLiveActivity.swift,
+			);
+			target = 4F617C652DDC4AF7000F5A92 /* RetroActivityWidgetExtension */;
+		};
 		4FD241022DD486F1007F19AF /* Exceptions for "RetroTransfer" folder in "RetroTransfer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -25,10 +70,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4F617C692DDC4AF8000F5A92 /* RetroActivityWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4F617C792DDC4AF9000F5A92 /* Exceptions for "RetroActivityWidget" folder in "RetroActivityWidgetExtension" target */,
+			);
+			path = RetroActivityWidget;
+			sourceTree = "<group>";
+		};
 		4FD240ED2DD48528007F19AF /* RetroTransfer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4FD241022DD486F1007F19AF /* Exceptions for "RetroTransfer" folder in "RetroTransfer" target */,
+				4F617C7B2DDC4CE7000F5A92 /* Exceptions for "RetroTransfer" folder in "RetroActivityWidgetExtension" target */,
 			);
 			path = RetroTransfer;
 			sourceTree = "<group>";
@@ -36,6 +90,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4F617C632DDC4AF7000F5A92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F617C682DDC4AF8000F5A92 /* SwiftUI.framework in Frameworks */,
+				4F617C672DDC4AF8000F5A92 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FD240E82DD48528007F19AF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -47,10 +110,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F617C2F2DDC2C1B000F5A92 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F617C302DDC2C1B000F5A92 /* WidgetKit.framework */,
+				4F617C322DDC2C1B000F5A92 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4FD240E22DD48528007F19AF = {
 			isa = PBXGroup;
 			children = (
 				4FD240ED2DD48528007F19AF /* RetroTransfer */,
+				4F617C692DDC4AF8000F5A92 /* RetroActivityWidget */,
+				4F617C2F2DDC2C1B000F5A92 /* Frameworks */,
 				4FD240EC2DD48528007F19AF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				4FD240EB2DD48528007F19AF /* RetroTransfer.app */,
+				4F617C662DDC4AF7000F5A92 /* RetroActivityWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,6 +141,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4F617C652DDC4AF7000F5A92 /* RetroActivityWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F617C762DDC4AF9000F5A92 /* Build configuration list for PBXNativeTarget "RetroActivityWidgetExtension" */;
+			buildPhases = (
+				4F617C622DDC4AF7000F5A92 /* Sources */,
+				4F617C632DDC4AF7000F5A92 /* Frameworks */,
+				4F617C642DDC4AF7000F5A92 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4F617C692DDC4AF8000F5A92 /* RetroActivityWidget */,
+			);
+			name = RetroActivityWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = RetroActivityWidgetExtension;
+			productReference = 4F617C662DDC4AF7000F5A92 /* RetroActivityWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		4FD240EA2DD48528007F19AF /* RetroTransfer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4FD240F62DD4852A007F19AF /* Build configuration list for PBXNativeTarget "RetroTransfer" */;
@@ -73,10 +170,12 @@
 				4FD240E72DD48528007F19AF /* Sources */,
 				4FD240E82DD48528007F19AF /* Frameworks */,
 				4FD240E92DD48528007F19AF /* Resources */,
+				4F617C462DDC2C1C000F5A92 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4F617C742DDC4AF9000F5A92 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				4FD240ED2DD48528007F19AF /* RetroTransfer */,
@@ -99,6 +198,9 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					4F617C652DDC4AF7000F5A92 = {
+						CreatedOnToolsVersion = 16.3;
+					};
 					4FD240EA2DD48528007F19AF = {
 						CreatedOnToolsVersion = 16.3;
 					};
@@ -122,11 +224,19 @@
 			projectRoot = "";
 			targets = (
 				4FD240EA2DD48528007F19AF /* RetroTransfer */,
+				4F617C652DDC4AF7000F5A92 /* RetroActivityWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4F617C642DDC4AF7000F5A92 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FD240E92DD48528007F19AF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,6 +247,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4F617C622DDC4AF7000F5A92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FD240E72DD48528007F19AF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,7 +263,69 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4F617C742DDC4AF9000F5A92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F617C652DDC4AF7000F5A92 /* RetroActivityWidgetExtension */;
+			targetProxy = 4F617C732DDC4AF9000F5A92 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4F617C772DDC4AF9000F5A92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HZG263D38Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RetroActivityWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RetroActivityWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.idog.retrotransfer.RetroActivityWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4F617C782DDC4AF9000F5A92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HZG263D38Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RetroActivityWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RetroActivityWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.idog.retrotransfer.RetroActivityWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		4FD240F42DD4852A007F19AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -275,6 +454,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RetroTransfer/RetroTransfer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZG263D38Y;
@@ -283,6 +463,8 @@
 				INFOPLIST_FILE = RetroTransfer/Other/Info.plist;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "RetroTransfer需要访问您的本地网络以创建HTTP服务器。";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -308,6 +490,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RetroTransfer/RetroTransfer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZG263D38Y;
@@ -316,6 +499,8 @@
 				INFOPLIST_FILE = RetroTransfer/Other/Info.plist;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "RetroTransfer需要访问您的本地网络以创建HTTP服务器。";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -339,6 +524,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4F617C762DDC4AF9000F5A92 /* Build configuration list for PBXNativeTarget "RetroActivityWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F617C772DDC4AF9000F5A92 /* Debug */,
+				4F617C782DDC4AF9000F5A92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4FD240E62DD48528007F19AF /* Build configuration list for PBXProject "RetroTransfer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
