@@ -13,6 +13,7 @@ struct RetroTransferMainView: View {
     @State private var isShowingFolderPicker = false
     @State private var showSettings = false
     @State var colors: ColorfulPreset = ColorfulPreset.winter
+    @Environment(\.colorScheme) private var colorScheme
 
     
     private var serverStatus: String {
@@ -39,28 +40,41 @@ struct RetroTransferMainView: View {
     
     var body: some View {
         ColorfulView(color: $colors)
+        .onAppear {
+            colors = colorScheme == .dark ? ColorfulPreset.ocean : ColorfulPreset.winter
+        }
+        .onChange(of: colorScheme) { scheme in
+            if scheme == .dark {
+                colors = .ocean
+            } else {
+                colors = .winter
+            }
+        }
         .overlay {
             VStack(spacing: 20) {
-                VStack(alignment: .leading) {
-                    Text("RetroTransfer")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding(.vertical, 40)
-                    
-                    HStack {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(String(format: String(localized: "Status: %@"), serverStatus))
-                                .font(.headline)
-                            Text(serverInfo)
-                                .font(.subheadline)
-                                .foregroundColor(.blue)
-                        }
+                GeometryReader { geometry in
+                    VStack(alignment: .leading) {
+                        Text("RetroTransfer")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding(.top, geometry.safeAreaInsets.top > 0 ? 20 : 40)
                         
-                        Spacer()
+                        HStack {
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(String(format: String(localized: "Status: %@"), serverStatus))
+                                    .font(.headline)
+                                Text(serverInfo)
+                                    .font(.subheadline)
+                                    .foregroundColor(.blue)
+                            }
+                            
+                            Spacer()
+                        }
+                        .padding(.vertical, 10)
                     }
-                    .padding(.vertical, 10)
+                    .padding()
                 }
-                .padding()
+                   
                 if serverManager.isRunning {
                     Text("Server logs will be displayed in the console")
                         .font(.footnote)
@@ -119,32 +133,41 @@ struct RetroTransferMainView: View {
                             .cornerRadius(12)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 15)
+                        .padding(.top, 10)
                     }
                     
-                    Button {
-                        if serverManager.isRunning == false {
-                            if serverManager.selectedFolder != nil {
-                                serverManager.start()
-                            } else {
-                                isShowingFolderPicker = true
+                    GeometryReader { proxy in
+                        HStack {
+                            Spacer()
+                            Button {
+                                if serverManager.isRunning == false {
+                                    if serverManager.selectedFolder != nil {
+                                        serverManager.start()
+                                    } else {
+                                        isShowingFolderPicker = true
+                                    }
+                                }else {
+                                    serverManager.stop()
+                                }
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Image(systemName: serverManager.isRunning ? "stop.fill" : "play.fill")
+                                        .foregroundColor(.white)
+                                    Text(serverManager.isRunning ? "Stop" : "Start")
+                                        .foregroundStyle(.white)
+                                        .font(.title3)
+                                }
                             }
-                        }else {
-                            serverManager.stop()
+                            .frame(width: 180, height: 50)
+                            .background(Color("startGreen"))
+                            .buttonStyle(.plain)
+                            .cornerRadius(25)
+                            Spacer()
                         }
-                    } label: {
-                        HStack(spacing: 5) {
-                            Image(systemName: serverManager.isRunning ? "stop.fill" : "play.fill")
-                                .foregroundColor(.white)
-                            Text(serverManager.isRunning ? "Stop" : "Start")
-                                .foregroundStyle(.white)
-                                .font(.title3)
-                        }
+                        
                     }
-                    .frame(width: 150, height: 50)
-                    .background(Color("startGreen"))
-                    .buttonStyle(.plain)
-                    .cornerRadius(25)
+                    .frame(height: 70)
+                    
                 }
                 .padding()
                 .background(.thinMaterial)
