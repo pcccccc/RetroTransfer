@@ -1,0 +1,123 @@
+//
+//  SyncSocketManager.swift
+//  RetroTransfer
+//
+//  Created by pc on 2025/5/21.
+//
+
+import MacroExpress // @Macro-swift
+import Foundation
+
+class SyncSocketManager {
+    let app = express()
+
+    func start() {
+        
+        app.use(
+            logger("dev"),
+            bodyParser.urlencoded(),
+            cookieParser(),
+            session(),
+            serveStatic(Bundle.main.bundlePath + "/public")
+        )
+        
+        // MARK: - Express Settings
+        app.set("view engine", "html") // really mustache, but we want to use .html
+        app.set("views", Bundle.main.bundlePath + "/views")
+        
+        
+        // MARK: - Session View Counter
+        
+        app.use { req, _, next in
+            req.session["viewCount"] = req.session[int: "viewCount"] + 1
+            next()
+        }
+        
+        
+        // MARK: - Routes
+        
+        let taglines = [
+            "Less than Perfect.",
+            "Das Haus das Verrückte macht.",
+            "Rechargeables included",
+            "Sensible Server Side Swift aS a Successful Software Service Solution"
+        ]
+        
+        
+        // MARK: - Form Handling
+        
+        app.get("/form") { _, res in
+            res.render("form")
+        }
+        app.post("/form") { req, res in
+            let user = req.body[string: "u"]
+            console.log("USER IS: \(user)")
+            
+            let options : [ String : Any ] = [
+                "user"      : user,
+                "nouser"    : user.isEmpty,
+                "viewCount" : req.session["viewCount"] ?? 0
+            ]
+            res.render("form", options)
+        }
+        
+        app.get("/multer") { _, res in
+            res.render("multer")
+        }
+        app.post("/multer", multer().array("file", 10)) { req, res, _ in
+            req.log.info("Got files:", req.files["file"])
+            res.render("multer", [
+                "files": req.files["file"]?.map {
+                    [ "name":     $0.originalName,
+                      "size":     $0.buffer?.length ?? 0,
+                      "mimeType": $0.mimeType ]
+                } ?? [],
+                "hasFiles": !(req.files["file"]?.isEmpty ?? true)
+            ])
+        }
+        
+        
+        
+        // MARK: - JSON & Cookies
+        
+        app.get("/json") { _, res in
+            res.json([
+                [ "firstname": "Donald",   "lastname": "Duck" ],
+                [ "firstname": "Dagobert", "lastname": "Duck" ]
+            ])
+        }
+        
+        app.get("/cookies") { req, res in
+            // returns all cookies as JSON
+            res.json(req.cookies)
+        }
+        
+        
+        // MARK: - Cows
+        
+        app.get("/cows") { _, res in
+            //    res.send("<html><body><pre>\(cows.vaca())</pre></body></html>")
+        }
+        
+        
+        // MARK: - Main page
+        
+        app.get("/") { req, res in
+            let tagline = taglines.randomElement()!
+            
+            let values : [ String : Any ] = [
+                "tagline"     : tagline,
+                "viewCount"   : req.session["viewCount"] ?? 0,
+                //        "cowOfTheDay" : cows.vaca()
+            ]
+            res.render("index", values)
+        }
+        
+        
+        // MARK: - Start Server
+        
+        app.listen(1337, "0.0.0.0") {
+            console.log("Server listening on http://localhost:1337")
+        }
+    }
+}

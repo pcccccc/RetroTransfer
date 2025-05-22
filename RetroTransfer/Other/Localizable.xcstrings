@@ -173,6 +173,9 @@
         }
       }
     },
+    "File processing failed" : {
+
+    },
     "HTTP Server" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -294,6 +297,9 @@
           }
         }
       }
+    },
+    "Redirecting..." : {
+
     },
     "RetroTransfer" : {
 
@@ -430,6 +436,12 @@
 
     },
     "Time:" : {
+
+    },
+    "Upload failed" : {
+
+    },
+    "Upload Successful" : {
 
     },
     "Version" : {

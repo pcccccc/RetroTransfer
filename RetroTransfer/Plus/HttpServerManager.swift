@@ -22,6 +22,7 @@ class HttpServerManager: ObservableObject {
     // CHANGE: 使用NSMapTable替代Set，因为NWConnection不符合Hashable协议
     private var activeConnections = NSMapTable<NSString, AnyObject>.strongToWeakObjects()
     private let activeConnectionsQueue = DispatchQueue(label: "com.httpserver.connections.sync")
+    var receiveData = Data()
     
     
     func start() {
@@ -125,8 +126,12 @@ class HttpServerManager: ObservableObject {
     private func handleConnection(_ connection: NWConnection) {
         // 添加到活动连接集合
         let connectionId = UUID().uuidString
-        activeConnectionsQueue.sync {
-            activeConnections.setObject(connection, forKey: connectionId as NSString)
+        if let existingConnection = activeConnections.object(forKey: connectionId as NSString) as? NWConnection {
+            print("重复的连接ID: \(connectionId)")
+        }else {
+            activeConnectionsQueue.sync {
+                activeConnections.setObject(connection, forKey: connectionId as NSString)
+            }
         }
         
         connection.stateUpdateHandler = { [weak self] state in
@@ -160,27 +165,55 @@ class HttpServerManager: ObservableObject {
     
     private func receiveRequest(_ connection: NWConnection, connectionId: String) {
         
-        connection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] (data, _, isComplete, error) in
-            guard let self = self,
-                  let data = data,
-                  let request = String(data: data, encoding: .utf8) else {
-                connection.cancel()
-                self?.removeConnection(connectionId)
+        connection.receiveDiscontiguous(minimumIncompleteLength: 0, maximumLength: 100000000) { [weak self] data, contentContext, isComplete, error in
+            print("收到data")
+            print(contentContext?.identifier)
+            print(contentContext?.isFinal)
+            print(data?.count)
+            print(isComplete)
+            if let error = error {
+                print("接收数据错误: \(error)")
+                // 处理错误情况，例如重新连接或清理资源
+                self?.handleConnectionError(connection: connection, connectionId: connectionId, error: error)
                 return
             }
             
-            // 解析请求路径
-            let requestLines = request.components(separatedBy: "\r\n")
-            if let firstLine = requestLines.first {
-                let components = firstLine.components(separatedBy: " ")
-                if components.count >= 2 {
-                    let path = components[1]
+            guard let self = self,
+                  let dispatchData = data else {
+                if error == nil {
+                    self?.receiveRequest(connection, connectionId: connectionId)
+                }
+                return
+            }
+            
+            // 将DispatchData转换为Data
+            let dataObj = Data(dispatchData)
+            
+            // 检查是否为POST请求，不依赖于整个请求能否被解码为UTF-8
+            // 只尝试解析请求头部，而不是整个请求
+            let headerEndData = "\r\n\r\n".data(using: .utf8)!
+            
+            if let headerEndRange = dataObj.range(of: headerEndData) {
+                let headerData = dataObj.subdata(in: 0..<headerEndRange.upperBound)
+                
+                if let headerString = String(data: headerData, encoding: .utf8) {
+                    let firstLine = headerString.components(separatedBy: "\r\n").first ?? ""
                     
-                    // 在后台队列中处理请求，不阻塞接收队列
-                    self.fileQueue.async {
-                        self.sendResponse(for: path, to: connection, connectionId: connectionId)
+                    if firstLine.hasPrefix("POST") {
+                        // 文件上传请求
+                        self.handleFileUpload(connection, requestData: dataObj, connectionId: connectionId)
+                        return
+                    } else if firstLine.hasPrefix("GET") {
+                        // 解析GET请求的路径
+                        let components = firstLine.components(separatedBy: " ")
+                        if components.count >= 2 {
+                            let path = components[1]
+                            self.fileQueue.async {
+                                self.sendResponse(for: path, to: connection, connectionId: connectionId)
+                            }
+                            return
+                        }
                     }
-                    return
                 }
             }
             
@@ -228,8 +261,14 @@ class HttpServerManager: ObservableObject {
             let fileManager = FileManager.default
             let contents = try fileManager.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: nil)
             
-            var html = "<html><head><meta charset=\"UTF-8\"><title>Directory Listing</title></head><body>"
+            var html = "<html><head><meta charset=\"utf-8\"><title>Directory Listing</title></head><body>"
             html += "<h1>\(String(format: String(localized: "Directory: %@"), directoryURL.lastPathComponent))</h1><ul>"
+            
+            // 添加上传表单
+            html += "<form enctype=\"multipart/form-data\" method=\"post\" action=\"/upload\">"
+            html += "<input type=\"file\" name=\"file\">"
+            html += "<button type=\"submit\">\("Upload")</button>"
+            html += "</form>"
             
             // 添加上级目录链接（如果不是根目录）
             if directoryURL.path != selectedFolder?.path {
@@ -263,7 +302,7 @@ class HttpServerManager: ObservableObject {
             html += "</ul></body></html>"
             
             let contentBytes = html.data(using: .utf8)!
-            let response = "HTTP/1.0 200 OK\r\nContent-Type: text/html\r\nContent-Length: \(contentBytes.count)\r\nCache-Control:no-cache\r\n\r\n\(html)"
+            let response = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: \(contentBytes.count)\r\nCache-Control:no-cache\r\n\r\n\(html)"
             
             // 一次性发送完整响应
             connection.send(content: response.data(using: .utf8)!, completion: .idempotent)
@@ -372,14 +411,126 @@ class HttpServerManager: ObservableObject {
         }
     }
     
+    
+    // 处理上传的文件
+    private func handleFileUpload(_ connection: NWConnection, requestData: Data, connectionId: String) {
+        fileQueue.async {
+            do {
+                let headerEndData = "\r\n\r\n".data(using: .utf8)!
+                        
+                if let headerEndRange = requestData.range(of: headerEndData) {
+                    let headerData = requestData.subdata(in: 0..<headerEndRange.upperBound)
+                    let requestString = String(data: headerData, encoding: .utf8) ?? ""
+                    
+                    // 获取Content-Length
+                    var contentLength: Int = 0
+                    if let contentLengthLine = requestString.components(separatedBy: "\r\n").first(where: { $0.lowercased().hasPrefix("content-length:") }) {
+                        let lengthString = contentLengthLine.dropFirst("content-length:".count).trimmingCharacters(in: .whitespaces)
+                        contentLength = Int(lengthString) ?? 0
+                        print("上传文件大小: \(contentLength) 字节")
+                    }
+                                
+                    
+                    // 解析请求中的路径参数
+                    let uploadPath = ""
+                    guard let selectedFolder = self.selectedFolder else {
+                        self.sendErrorResponse(to: connection, statusCode: 500, message: String(localized: "No shared folder selected"))
+                        return
+                    }
+                    
+                    // 确定上传目标目录
+                    var targetDirectory = selectedFolder
+                    if !uploadPath.isEmpty {
+                        targetDirectory = selectedFolder.appendingPathComponent(uploadPath)
+                    }
+                    
+                    // 解析multipart表单数据
+                    if let boundaryLine = requestString.components(separatedBy: "\r\n").first(where: { $0.hasPrefix("Content-Type: multipart/form-data; boundary=") }) {
+                        let boundaryStart = boundaryLine.firstIndex(of: "=")!
+                        let boundaryString = "--" + String(boundaryLine[boundaryLine.index(after: boundaryStart)...])
+                        
+                        // 分割multipart数据
+                        let parts = requestData.split(separator: boundaryString.data(using: .utf8)!)
+                        
+                        for part in parts where part.count > 0 {
+                            // 尝试查找Content-Disposition头，它包含filename
+                            let cdPattern = "Content-Disposition:".data(using: .ascii)!
+                            if let cdRange = part.range(of: cdPattern) {
+                                let filenamePattern = "filename=\"".data(using: .ascii)!
+                                let quotePattern = "\"".data(using: .ascii)!
+                                let headerPart = part.subdata(in: cdRange.lowerBound..<min(cdRange.lowerBound+200, part.count))
+                                if let filenameRange = headerPart.range(of: filenamePattern),
+                                   let endQuoteRange = headerPart.range(of: quotePattern, options: [], in: filenameRange.upperBound..<headerPart.endIndex) {
+                                    
+                                    // 提取文件名
+                                    let filenameData = headerPart.subdata(in: filenameRange.upperBound..<endQuoteRange.lowerBound)
+                                    // 尝试将文件名部分解码为UTF-8
+                                    let filename = String(data: filenameData, encoding: .utf8) ?? "unknownfile"
+                                    
+                                    // 查找头部结束标记
+                                    if let headerEnd = part.range(of: headerEndData) {
+                                        let fileDataStart = headerEnd.upperBound
+                                        // 文件数据结束于part的末尾减去结束符
+                                        var fileData = part.suffix(from: fileDataStart)
+                                        // 移除末尾的CR+LF（如果存在）
+                                        if fileData.count > 2 && fileData.suffix(2) == "\r\n".data(using: .utf8)! {
+                                            fileData = fileData.dropLast(2)
+                                        }
+                                        self.receiveData.append(fileData)
+                                        if contentLength == requestData.count {
+                                            // 将文件保存到目标目录
+                                            let fileURL = targetDirectory.appendingPathComponent(filename)
+                                            try self.receiveData.write(to: fileURL)
+                                            print("File uploaded successfully at \(fileURL.path)")
+                                            self.receiveData = Data()
+                                            // 发送上传成功响应
+                                            let redirectPath = uploadPath.isEmpty ? "/" : "/\(uploadPath)"
+                                            let html = "<html><head><meta http-equiv=\"refresh\" content=\"1;url=\(redirectPath)\"></head><body><h1>\(String(localized: "Upload Successful"))</h1><p>\(String(localized: "Redirecting..."))</p></body></html>"
+                                            let response = "HTTP/1.0 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: \(html.utf8.count)\r\n\r\n\(html)"
+                                            connection.send(content: response.data(using: .utf8)!, completion: .idempotent)
+                                        }else {
+                                            // 发送一个 100 Continue 响应，告诉客户端继续发送
+                                            
+                                            var response = "HTTP/1.1 100 Continue\r\n"
+                                            response += "Content-Type: text\r\n"
+                                            response += "\r\n" // 头部结束
+                                            let headerBytes = response.data(using: .utf8)!
+                                            var completeResponse = Data()
+                                            completeResponse.append(headerBytes)
+                                            
+                                            connection.send(content: completeResponse, completion: .idempotent)
+                                        }
+                                        return
+                                    }
+                                }
+                            } else if let partString = String(data: part, encoding: .utf8) {
+                                print("处理multipart表单数据: \(partString)")
+                            }
+                        }
+                    }
+                }
+                
+                // 如果处理失败，发送错误响应
+                self.sendErrorResponse(to: connection, statusCode: 400, message: String(localized: "Upload failed"))
+            } catch {
+                self.sendErrorResponse(to: connection, statusCode: 500, message: String(localized: "File processing failed"))
+            }
+        }
+    }
+    
+    // 处理连接错误
+    private func handleConnectionError(connection: NWConnection, connectionId: String, error: Error) {
+        print("连接 \(connectionId) 发生错误: \(error)")
+    }
+    
     private func sendErrorResponse(to connection: NWConnection, statusCode: Int, message: String) {
         // 极简HTML，确保兼容性
-        let html = "<html><head><title>\(String(format: String(localized: "Error %d"), statusCode))</title></head><body><h1>\(String(format: String(localized: "Error %d"), statusCode))</h1><p>\(message)</p></body></html>"
+        let html = "<html><head><meta charset=\"UTF-8\"><title>\(String(format: String(localized: "Error %d"), statusCode))</title></head><body><h1>\(String(format: String(localized: "Error %d"), statusCode))</h1><p>\(message)</p></body></html>"
         
         let contentBytes = html.data(using: .utf8)!
         
         var response = "HTTP/1.0 \(statusCode) Error\r\n"
-        response += "Content-Type: text/html\r\n"
+        response += "Content-Type: text/html; charset=utf-8\r\n"
         response += "Content-Length: \(contentBytes.count)\r\n"
         response += "\r\n" // 头部结束
         

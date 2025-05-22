@@ -10,6 +10,7 @@ import ColorfulX
 
 struct RetroTransferMainView: View {
     @StateObject private var serverManager = HttpServerManager()
+    @StateObject private var serverViewModel = ServerViewModel()
     @State private var isShowingFolderPicker = false
     @State private var showSettings = false
     @State var colors: ColorfulPreset = ColorfulPreset.winter
@@ -179,6 +180,8 @@ struct RetroTransferMainView: View {
         .ignoresSafeArea()
         .sheet(isPresented: $isShowingFolderPicker) {
             FolderPickerView { url in
+                serverViewModel.manager.start()
+
                 serverManager.selectedFolder = url
                 if serverManager.isRunning {
                     serverManager.stop()
