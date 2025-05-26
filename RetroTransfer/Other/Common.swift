@@ -34,4 +34,30 @@ struct Common {
 
         return address
     }
+    
+    static func getMimeType(for url: URL) -> String {
+        let ext = url.pathExtension.lowercased()
+        
+        switch ext {
+        case "html", "htm": return "text/html"
+        case "css": return "text/css"
+        case "js": return "text/javascript"
+        case "jpg", "jpeg": return "image/jpeg"
+        case "png": return "image/png"
+        case "gif": return "image/gif"
+        case "svg": return "image/svg+xml"
+        case "pdf": return "application/pdf"
+        case "mp3": return "audio/mpeg"
+        case "mp4": return "video/mp4"
+        case "json": return "application/json"
+        case "xml": return "application/xml"
+        case "txt": return "text/plain"
+        case "jar": return "application/java-archive"
+        case "sisx", "sis": return "application/vnd.symbian.install"
+        case "zip": return "application/zip"
+        case "rar": return "application/x-rar-compressed"
+        case "exe": return "application/octet-stream"
+        default: return "application/octet-stream"
+        }
+    }
 }

@@ -9,7 +9,6 @@ import SwiftUI
 import ColorfulX
 
 struct RetroTransferMainView: View {
-    @StateObject private var serverManager = HttpServerManager()
     @StateObject private var serverViewModel = ServerViewModel()
     @State private var isShowingFolderPicker = false
     @State private var showSettings = false
@@ -18,8 +17,8 @@ struct RetroTransferMainView: View {
 
     
     private var serverStatus: String {
-        let statusText = serverManager.isRunning ? String(localized: "Running") : String(localized: "Stopped")
-        if let folder = serverManager.selectedFolder {
+        let statusText = serverViewModel.isRunning ? String(localized: "Running") : String(localized: "Stopped")
+        if let folder = serverViewModel.manager.selectedFolder {
             return "\(statusText) - \(folder.lastPathComponent)"
         } else {
             return statusText
@@ -27,12 +26,12 @@ struct RetroTransferMainView: View {
     }
     
     private var serverInfo: String {
-        if serverManager.isRunning {
+        if serverViewModel.isRunning {
             let ipAddresses = Common.getWiFiIPAddress()
             if let mainIP = ipAddresses {
-                return "http://\(mainIP):\(serverManager.settingViewModel.port)/"
+                return "http://\(mainIP):\(serverViewModel.manager.settingViewModel.port)/"
             } else {
-                return "http://localhost:\(serverManager.settingViewModel.port)/"
+                return "http://localhost:\(serverViewModel.manager.settingViewModel.port)/"
             }
         } else {
             return String(localized: "Not Started")
@@ -40,6 +39,7 @@ struct RetroTransferMainView: View {
     }
     
     var body: some View {
+        
         ColorfulView(color: $colors)
         .onAppear {
             colors = colorScheme == .dark ? ColorfulPreset.ocean : ColorfulPreset.winter
@@ -76,7 +76,7 @@ struct RetroTransferMainView: View {
                     .padding()
                 }
                    
-                if serverManager.isRunning {
+                if serverViewModel.isRunning {
                     Text("Server logs will be displayed in the console")
                         .font(.footnote)
                         .foregroundColor(.gray)
@@ -98,7 +98,7 @@ struct RetroTransferMainView: View {
                                     VStack(alignment: .center) {
                                         Text("Shared Folder")
                                             .font(.headline)
-                                        if let folder = serverManager.selectedFolder {
+                                        if let folder = serverViewModel.manager.selectedFolder {
                                             Text(folder.path)
                                                 .font(.caption)
                                                 .lineLimit(1)
@@ -141,20 +141,20 @@ struct RetroTransferMainView: View {
                         HStack {
                             Spacer()
                             Button {
-                                if serverManager.isRunning == false {
-                                    if serverManager.selectedFolder != nil {
-                                        serverManager.start()
+                                if serverViewModel.isRunning == false {
+                                    if serverViewModel.manager.selectedFolder != nil {
+                                        serverViewModel.manager.start(for: serverViewModel.manager.selectedFolder!)
                                     } else {
                                         isShowingFolderPicker = true
                                     }
                                 }else {
-                                    serverManager.stop()
+                                    serverViewModel.manager.stop()
                                 }
                             } label: {
                                 HStack(spacing: 8) {
-                                    Image(systemName: serverManager.isRunning ? "stop.fill" : "play.fill")
+                                    Image(systemName: serverViewModel.isRunning ? "stop.fill" : "play.fill")
                                         .foregroundColor(.white)
-                                    Text(serverManager.isRunning ? "Stop" : "Start")
+                                    Text(serverViewModel.isRunning ? "Stop" : "Start")
                                         .foregroundStyle(.white)
                                         .font(.title3)
                                 }
@@ -180,13 +180,9 @@ struct RetroTransferMainView: View {
         .ignoresSafeArea()
         .sheet(isPresented: $isShowingFolderPicker) {
             FolderPickerView { url in
-                serverViewModel.manager.start()
-
-                serverManager.selectedFolder = url
-                if serverManager.isRunning {
-                    serverManager.stop()
-                    serverManager.start()
-                }
+                serverViewModel.manager.selectedFolder = url
+                serverViewModel.manager.start(for: url)
+                serverViewModel.isRunning = true
             }
         }
         .sheet(isPresented: $showSettings) {

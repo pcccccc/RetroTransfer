@@ -173,9 +173,6 @@
         }
       }
     },
-    "File processing failed" : {
-
-    },
     "HTTP Server" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -436,9 +433,6 @@
 
     },
     "Time:" : {
-
-    },
-    "Upload failed" : {
 
     },
     "Upload Successful" : {

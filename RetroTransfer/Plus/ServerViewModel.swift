@@ -8,5 +8,6 @@
 import Foundation
 
 class ServerViewModel: ObservableObject {
-    @Published var manager = SyncSocketManager()
+    @Published var manager = ServerManager()
+    @Published var isRunning = false
 }

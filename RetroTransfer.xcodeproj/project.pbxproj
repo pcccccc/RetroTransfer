@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F06BBDF2DE45ACC00BE88A9 /* MacroExpress in Frameworks */ = {isa = PBXBuildFile; productRef = 4F06BBDE2DE45ACC00BE88A9 /* MacroExpress */; };
 		4F3AC1FC2DDB23FD00D951C7 /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3AC1FB2DDB23FD00D951C7 /* ColorfulX */; };
-		4F5AC2772DDDCC9B00CCC5A9 /* MacroExpress in Frameworks */ = {isa = PBXBuildFile; productRef = 4F5AC2762DDDCC9B00CCC5A9 /* MacroExpress */; };
 		4F5AC30F2DDEE8A000CCC5A9 /* public in Resources */ = {isa = PBXBuildFile; fileRef = 4F5AC30E2DDEE8A000CCC5A9 /* public */; };
 		4F5AC3112DDEE8AC00CCC5A9 /* views in Resources */ = {isa = PBXBuildFile; fileRef = 4F5AC3102DDEE8AC00CCC5A9 /* views */; };
 		4F617C672DDC4AF8000F5A92 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F617C302DDC2C1B000F5A92 /* WidgetKit.framework */; };
@@ -110,7 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F3AC1FC2DDB23FD00D951C7 /* ColorfulX in Frameworks */,
-				4F5AC2772DDDCC9B00CCC5A9 /* MacroExpress in Frameworks */,
+				4F06BBDF2DE45ACC00BE88A9 /* MacroExpress in Frameworks */,
 				4F617C842DDD9758000F5A92 /* CocoaAsyncSocket in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -194,7 +194,7 @@
 			packageProductDependencies = (
 				4F3AC1FB2DDB23FD00D951C7 /* ColorfulX */,
 				4F617C832DDD9758000F5A92 /* CocoaAsyncSocket */,
-				4F5AC2762DDDCC9B00CCC5A9 /* MacroExpress */,
+				4F06BBDE2DE45ACC00BE88A9 /* MacroExpress */,
 			);
 			productName = HttpServer;
 			productReference = 4FD240EB2DD48528007F19AF /* RetroTransfer.app */;
@@ -230,7 +230,7 @@
 			packageReferences = (
 				4F3AC1FA2DDB23FD00D951C7 /* XCRemoteSwiftPackageReference "ColorfulX" */,
 				4F617C822DDD9758000F5A92 /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */,
-				4F5AC2752DDDCC9B00CCC5A9 /* XCRemoteSwiftPackageReference "MacroExpress" */,
+				4F06BBDD2DE45ACC00BE88A9 /* XCRemoteSwiftPackageReference "MacroExpress" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FD240EC2DD48528007F19AF /* Products */;
@@ -570,20 +570,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4F06BBDD2DE45ACC00BE88A9 /* XCRemoteSwiftPackageReference "MacroExpress" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Macro-swift/MacroExpress";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.7;
+			};
+		};
 		4F3AC1FA2DDB23FD00D951C7 /* XCRemoteSwiftPackageReference "ColorfulX" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Lakr233/ColorfulX";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.5.5;
-			};
-		};
-		4F5AC2752DDDCC9B00CCC5A9 /* XCRemoteSwiftPackageReference "MacroExpress" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Macro-swift/MacroExpress";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.6;
 			};
 		};
 		4F617C822DDD9758000F5A92 /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */ = {
@@ -597,15 +597,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F06BBDE2DE45ACC00BE88A9 /* MacroExpress */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F06BBDD2DE45ACC00BE88A9 /* XCRemoteSwiftPackageReference "MacroExpress" */;
+			productName = MacroExpress;
+		};
 		4F3AC1FB2DDB23FD00D951C7 /* ColorfulX */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F3AC1FA2DDB23FD00D951C7 /* XCRemoteSwiftPackageReference "ColorfulX" */;
 			productName = ColorfulX;
-		};
-		4F5AC2762DDDCC9B00CCC5A9 /* MacroExpress */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F5AC2752DDDCC9B00CCC5A9 /* XCRemoteSwiftPackageReference "MacroExpress" */;
-			productName = MacroExpress;
 		};
 		4F617C832DDD9758000F5A92 /* CocoaAsyncSocket */ = {
 			isa = XCSwiftPackageProductDependency;
